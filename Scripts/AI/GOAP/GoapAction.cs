@@ -12,6 +12,7 @@ namespace Assets.Scripts.AI.GOAP
 
         public int Cost;
         [SerializeField] private GameObject _target;
+
         public bool IsInRange { get; set; }
         public bool IsDone { get; set; }
         
@@ -39,9 +40,9 @@ namespace Assets.Scripts.AI.GOAP
         }
 
         protected abstract void SpecificReset();
-        public abstract IEnumerator CheckProceduralPrecondition(GameObject agent);
+        public abstract bool CheckProceduralPrecondition(GameObject agent);//TODO: change to coroutine
         public abstract bool Perform(GameObject agent);
-        public abstract bool RequireInRange();//这个和Action本身息息相关，所以应该用abstract-override写好
+        public abstract bool RequireInRange();//better write it personally as a abstract function
 
         public void DoReset()
         {

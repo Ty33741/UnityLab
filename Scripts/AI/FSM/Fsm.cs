@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.AI.FSM
 {
-    //栈式状态机
+    //stack finite state machine
     public class Fsm
     {
         public delegate void State(Fsm fsm, GameObject fsmGameObject);

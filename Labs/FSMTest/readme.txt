@@ -1,1 +1,1 @@
-﻿农民收获资源，并在背包满时在篝火处卸货
+﻿farmer harvest, and unload at bonfire when backpack is full

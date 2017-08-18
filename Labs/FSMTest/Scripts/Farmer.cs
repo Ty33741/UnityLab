@@ -38,7 +38,7 @@ namespace Assets.Labs.FSMTest.Scripts
         {
             _unloadState = (fsm, fsmGameObject) =>
             {
-                //如果目标篝火为空...
+                // target bonfire is null...
                 if (Target == null)
                 {
                     Bonfire bonfire = FindObjectOfType<Bonfire>();
@@ -52,7 +52,7 @@ namespace Assets.Labs.FSMTest.Scripts
                     Target = bonfire.gameObject;
                 }
 
-                //如果远离目标篝火...
+                // target too far...
                 if ((Target.transform.position - transform.position).magnitude > MaxTargetRange)
                 {
                     fsm.PushState(_moveState);
@@ -71,7 +71,7 @@ namespace Assets.Labs.FSMTest.Scripts
         {
             _harvestState = (fsm, fsmGameObject) =>
             {
-                //如果目标草药为空...
+                // target herb is null...
                 if (Target == null)
                 {
                     Herb herb = FindObjectOfType<Herb>();
@@ -85,7 +85,7 @@ namespace Assets.Labs.FSMTest.Scripts
                     Target = herb.gameObject;
                 }
 
-                //如果远离目标草药...
+                // target too far...
                 if ((Target.transform.position - transform.position).magnitude > MaxTargetRange)
                 {
                     fsm.PushState(_moveState);
