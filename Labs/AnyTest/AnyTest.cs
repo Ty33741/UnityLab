@@ -8,53 +8,33 @@ namespace Assets.Labs.AnyTest
     {
         void Start()
         {
-            //int[] a = { 1, 2, 3 };
-            //int[] b = Test(a);
-            //foreach (var i in a)
-            //{
-            //    Debug.Log(i);
-            //}
-            //foreach (var i in b)
-            //{
-            //    Debug.Log(i);
-            //}
-
-            //List<int> a = new List<int>();
-            //a.Add(1);
-            //a.Add(2);
-            //a.Add(3);
-            //List<int> b = Test(a);
-            //foreach (var i in a)
-            //{
-            //    Debug.Log(i);
-            //}
-            //foreach (var i in b)
-            //{
-            //    Debug.Log(i);
-            //}
-
-            string a = "123";
-            string b = Test(ref a);
-            Debug.Log(a);
-            Debug.Log(b);
+            HashsetTest();
         }
 
-        private int[] Test(int[] test)
+        private HashSet<KeyValuePair<string, object>> test = new HashSet<KeyValuePair<string, object>>();
+
+        private void HashsetTest()
         {
-            test[0] = 9;
-            return test.Where(i => i != 2).ToArray();
+            AddItemToHashSet(test);
+            Debug.Log(SearchInHashSet(test, "123"));
         }
 
-        private List<int> Test(List<int> test)
+        private void AddItemToHashSet(HashSet<KeyValuePair<string, object>> data)
         {
-            test.RemoveAt(1);
-            return test;
+            data.Add(new KeyValuePair<string, object>("123", gameObject));
+            Debug.Log(SearchInHashSet(data, "123"));
         }
 
-        private string Test(ref string test)
+        private object SearchInHashSet(HashSet<KeyValuePair<string, object>> data, string key)
         {
-            test = test.Insert(0, "x");
-            return test;
+            foreach (var d in data)
+            {
+                if (d.Key.Equals(key))
+                {
+                    return d.Value;
+                }
+            }
+            return null;
         }
     }
 }

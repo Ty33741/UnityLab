@@ -9,10 +9,10 @@ namespace Assets.Scripts.AI.FSM
         public delegate void State(Fsm fsm, GameObject fsmGameObject);
 
         private Stack<State> _stateStack = new Stack<State>();
-        
+
         public void Run(GameObject fsmGameObject)
         {
-            if (_stateStack.Peek() != null)
+            if (_stateStack.Count > 0)
                 _stateStack.Peek().Invoke(this, fsmGameObject);
         }
 

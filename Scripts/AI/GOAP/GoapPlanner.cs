@@ -28,8 +28,8 @@ namespace Assets.Scripts.AI.GOAP
 
 
         // generate best plan of actions in stack
-        public Stack<GoapAction> Plan(GameObject agent, GoapAction[] actions,
-            HashSet<KeyValuePair<string, object>> worldStates, 
+        public Stack<GoapAction> Plan(GoapAgent agent, GoapAction[] actions,
+            HashSet<KeyValuePair<string, object>> worldStates,
             HashSet<KeyValuePair<string, object>> goals)
         {
             // 1. reset all actions
@@ -39,7 +39,7 @@ namespace Assets.Scripts.AI.GOAP
             }
 
             // 2. single out all valid actions
-            GoapAction[] availableActions = 
+            GoapAction[] availableActions =
                 actions.Where(action => action.CheckProceduralPrecondition(agent)).ToArray();
             //HashSet<GoapAction> availableActions = new HashSet<GoapAction>();
             //foreach (var action in actions)
@@ -53,11 +53,15 @@ namespace Assets.Scripts.AI.GOAP
             // 3. build a plan tree
             List<Node> plans = new List<Node>();
             Node head = new Node(null, null, worldStates, 0);
-            bool success = BuildTree(head, plans, availableActions, goals);
 
+            bool success = CheckPreconditions(worldStates, goals);
+            if (success)// if goals reached, return empty stack
+            {
+                return new Stack<GoapAction>();
+            }
+            success = BuildTree(head, plans, availableActions, goals);
             if (!success)
             {
-                Debug.Log("no plan");
                 return null;
             }
 
@@ -73,7 +77,7 @@ namespace Assets.Scripts.AI.GOAP
 
             // 5. build result
             Stack<GoapAction> result = new Stack<GoapAction>();
-            while (bestPlan != null)
+            while (bestPlan != null && bestPlan.Action != null)
             {
                 result.Push(bestPlan.Action);
                 bestPlan = bestPlan.Parent;
@@ -84,20 +88,20 @@ namespace Assets.Scripts.AI.GOAP
 
 
         // build planning tree
-        private bool BuildTree(Node node, List<Node> plans, GoapAction[]actions, 
+        private bool BuildTree(Node node, List<Node> plans, GoapAction[] actions,
             HashSet<KeyValuePair<string, object>> goal)
         {
             bool success = false;
             foreach (var action in actions)
             {
                 // check preconditions
-                if (!CheckPreconditions(node.States, action.Preconditions))
+                if (!CheckPreconditions(node.States, action.GetPreconditions()))
                 {
                     continue;
                 }
 
                 // apply effect and set child node
-                HashSet<KeyValuePair<string, object>> states = ApplyEffects(node.States, action.Effects);
+                HashSet<KeyValuePair<string, object>> states = ApplyEffects(node.States, action.GetEffects());
                 Node child = new Node(node, action, states, node.TotalCost + action.Cost);
 
                 // check goal
@@ -192,6 +196,6 @@ namespace Assets.Scripts.AI.GOAP
             //return result;
         }
 
-        
+
     }
 }
