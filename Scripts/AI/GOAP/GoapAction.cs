@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Policy;
+using Assets.Labs.AnyTest;
 using UnityEngine;
 
 namespace Assets.Scripts.AI.GOAP
@@ -8,70 +10,50 @@ namespace Assets.Scripts.AI.GOAP
     public abstract class GoapAction : MonoBehaviour
     {
         public int Cost;
+        public Func<GoapAgent, bool> Go;
 
-        //private HashSet<KeyValuePair<string, object>> _preconditions;
-        //private HashSet<KeyValuePair<string, object>> _effects;
-        //public HashSet<KeyValuePair<string, object>> Preconditions
-        //{
-        //    get { return _preconditions; }
-        //}
-        //public HashSet<KeyValuePair<string, object>> Effects
-        //{
-        //    get { return _effects; }
-        //}
-        
+        public void DoReset()
+        {
+            Go = DoEnter;
+            SpecificReset();
+        }
 
-        //protected GoapAction()
-        //{
-        //    _preconditions = new HashSet<KeyValuePair<string, object>>();
-        //    _effects = new HashSet<KeyValuePair<string, object>>();
-        //}
+        public bool IsDone()
+        {
+            return Go == null;
+        }
 
-        public abstract void DoReset();
-        public abstract bool IsDone();
+        public bool DoEnter(GoapAgent agent)
+        {
+            bool result = Enter(agent);
+            Go = Run;
+            return result;
+        }
+
+        public bool DoRun(GoapAgent agent)
+        {
+            return Run(agent);
+        }
+
+        public bool DoExit(GoapAgent agent)
+        {
+            bool result = Exit(agent);
+            Go = null;
+            return result;
+        }
+
+        protected void ActionOver()
+        {
+            Go = DoExit;
+        }
+
+        protected abstract void SpecificReset();
+        protected abstract bool Enter(GoapAgent agent);
+        protected abstract bool Exit(GoapAgent agent);
+        protected abstract bool Run(GoapAgent agent);
+
         public abstract bool CheckProceduralPrecondition(GoapAgent agent);//TODO: change to coroutine
-        public abstract bool Perform(GoapAgent agent);
         public abstract HashSet<KeyValuePair<string, object>> GetPreconditions();
         public abstract HashSet<KeyValuePair<string, object>> GetEffects();
-
-        //public void AddPrecondition(string key, object value)
-        //{
-        //    _preconditions.Add(new KeyValuePair<string, object>(key, value));
-        //}
-
-        //public void RemovePrecondition(string key)
-        //{
-        //    KeyValuePair<string, object> precondToRemove = default(KeyValuePair<string, object>);
-        //    foreach (var precondition in _preconditions)
-        //    {
-        //        if (precondition.Key.Equals(key))
-        //        {
-        //            precondToRemove = precondition;
-        //            break;
-        //        }
-        //    }
-        //    if (!precondToRemove.Equals(default(KeyValuePair<string, object>)))
-        //        _preconditions.Remove(precondToRemove);
-        //}
-
-        //public void AddEffect(string key, object value)
-        //{
-        //    _effects.Add(new KeyValuePair<string, object>(key, value));
-        //}
-
-        //public void RemoveEffect(string key)
-        //{
-        //    KeyValuePair<string, object> effectToRemove = default(KeyValuePair<string, object>);
-        //    foreach (var effect in _effects)
-        //    {
-        //        if (effect.Key.Equals(key))
-        //        {
-        //            effectToRemove = effect;
-        //            break;
-        //        }
-        //    }
-        //    if (!effectToRemove.Equals(default(KeyValuePair<string, object>)))
-        //        _preconditions.Remove(effectToRemove);
-        //}
     }
 }

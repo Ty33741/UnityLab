@@ -10,25 +10,11 @@ namespace Assets.Labs.GOAPTest.Scripts
         public float Duration = 1.5f;
 
         private float _time;
-        private bool _isDone;
-
-        //private void Start()
-        //{
-        //    AddPrecondition("hasTool", true);
-        //    AddPrecondition("nearHerb", true);
-        //    AddEffect("collectHerb", true);
-        //}
 
 
-        public override void DoReset()
+        protected override void SpecificReset()
         {
             _time = 0;
-            _isDone = false;
-        }
-
-        public override bool IsDone()
-        {
-            return _isDone;
         }
 
         public override bool CheckProceduralPrecondition(GoapAgent agent)
@@ -36,7 +22,13 @@ namespace Assets.Labs.GOAPTest.Scripts
             return true;
         }
 
-        public override bool Perform(GoapAgent agent)
+        protected override bool Enter(GoapAgent agent)
+        {
+            Debug.Log("pick up enter");
+            return true;
+        }
+
+        protected override bool Run(GoapAgent agent)
         {
             var target = agent.SearchActionData("targetHerb") as GameObject;
             if (target == null)
@@ -53,8 +45,14 @@ namespace Assets.Labs.GOAPTest.Scripts
                 agent.GetComponent<Farmer>().ToolCount--;
                 agent.GetComponent<Farmer>().HerbCount++;
                 Destroy(target);
-                _isDone = true;
+                ActionOver();
             }
+            return true;
+        }
+
+        protected override bool Exit(GoapAgent agent)
+        {
+            Debug.Log("pick up exit");
             return true;
         }
 

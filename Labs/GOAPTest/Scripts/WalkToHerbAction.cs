@@ -6,25 +6,12 @@ namespace Assets.Labs.GOAPTest.Scripts
 {
     public class WalkToHerbAction : GoapAction
     {
-        private bool _isDone;
-
         public GameObject Target;
         public float MoveSpeed = 5f;
 
-        //private void Start()
-        //{
-        //    AddEffect("nearHerb", true);
-        //}
 
-        public override void DoReset()
+        protected override void SpecificReset()
         {
-            _isDone = false;
-            Target = null;
-        }
-
-        public override bool IsDone()
-        {
-            return _isDone;
         }
 
         public override bool CheckProceduralPrecondition(GoapAgent agent)
@@ -43,7 +30,13 @@ namespace Assets.Labs.GOAPTest.Scripts
             return true;
         }
 
-        public override bool Perform(GoapAgent agent)
+        protected override bool Enter(GoapAgent agent)
+        {
+            Debug.Log("walk enter");
+            return true;
+        }
+
+        protected override bool Run(GoapAgent agent)
         {
             if (Target == null)
             {
@@ -53,8 +46,14 @@ namespace Assets.Labs.GOAPTest.Scripts
 
             if (agent.GetComponent<Farmer>().MoveTo(Target.transform.position, MoveSpeed))
             {
-                _isDone = true;
+                ActionOver();
             }
+            return true;
+        }
+
+        protected override bool Exit(GoapAgent agent)
+        {
+            Debug.Log("walk exit");
             return true;
         }
 
