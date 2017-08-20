@@ -15,7 +15,7 @@ namespace Assets.Scripts.AI.GOAP
         public void DoReset()
         {
             Go = DoEnter;
-            SpecificReset();
+            //SpecificReset();
         }
 
         public bool IsDone()
@@ -42,17 +42,16 @@ namespace Assets.Scripts.AI.GOAP
             return result;
         }
 
-        protected void ActionOver()
+        protected void RunOver()
         {
             Go = DoExit;
         }
 
-        protected abstract void SpecificReset();
-        protected abstract bool Enter(GoapAgent agent);
-        protected abstract bool Exit(GoapAgent agent);
-        protected abstract bool Run(GoapAgent agent);
-
+        //protected abstract void SpecificReset(); // since we have Exit(), it no longer needed
         public abstract bool CheckProceduralPrecondition(GoapAgent agent);//TODO: change to coroutine
+        protected abstract bool Enter(GoapAgent agent);
+        protected abstract bool Run(GoapAgent agent);
+        protected abstract bool Exit(GoapAgent agent);
         public abstract HashSet<KeyValuePair<string, object>> GetPreconditions();
         public abstract HashSet<KeyValuePair<string, object>> GetEffects();
     }

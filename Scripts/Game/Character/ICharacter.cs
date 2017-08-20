@@ -4,6 +4,6 @@ namespace Assets.Scripts.Game.Character
 {
     public interface ICharacter
     {
-        bool MoveTo(Vector3 dest, float speed);
+        bool MoveTo(Vector3 dest, float speed, float range);
     }
 }

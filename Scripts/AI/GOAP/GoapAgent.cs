@@ -96,31 +96,6 @@ namespace Assets.Scripts.AI.GOAP
                     fsm.PushState(_idleState);
                 }
 
-                //// if action finished...
-                //if (_plan.Count > 0 && _plan.Peek().IsDone)
-                //{
-                //    _plan.Peek().Exit(this);
-                //    _plan.Pop();
-                //}
-
-                //// if plan finished...
-                //if (_plan.Count == 0)
-                //{
-                //    _dataProvider.PlanFinished();
-                //    fsm.PopState();
-                //    fsm.PushState(_idleState);
-                //    return;
-                //}
-
-                //// perform action
-                //GoapAction action = _plan.Peek();
-                //if (!action.Run(this))
-                //{
-                //    _dataProvider.PlanAborted(action);
-                //    fsm.PopState();
-                //    fsm.PushState(_idleState);
-                //}
-
             };
         }
 
@@ -154,7 +129,7 @@ namespace Assets.Scripts.AI.GOAP
             {
                 if (result != "")
                 {
-                    result += " <-";
+                    result += " -> ";
                 }
                 result += action.GetType().Name;
             }
