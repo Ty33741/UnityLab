@@ -32,6 +32,7 @@ namespace Assets.Labs.GOAPTest.Test2.Scripts
             }
 
             Count -= x;
+            ResetItem();
             return true;
         }
 

@@ -9,7 +9,7 @@ namespace Assets.Scripts.AI.GOAP
 {
     public abstract class GoapAction : MonoBehaviour
     {
-        public int Cost;
+        public int Cost = 1;
         public Func<GoapAgent, bool> Go;
 
         public void DoReset()
