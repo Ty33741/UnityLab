@@ -6,7 +6,6 @@ namespace Assets.Labs.FSMTest.Scripts
 {
     public class Farmer : SimpleCharacter
     {
-        public float MoveSpeed;
         public int BackPack;
         public int MaxBackPack;
         public GameObject Target;
